@@ -788,7 +788,7 @@
         <div class="hero-ip-box">
           <span>主入口 IP：</span>
           <!-- TODO: 把这里改成你实际的主服 IP -->
-          <span id="main-ip-text">play.miragev.example.com:25565</span>
+          <span id="main-ip-text">202.189.6.2:36176</span>
           <button type="button" data-copy-target="#main-ip-text">复制</button>
         </div>
         <div class="hero-preview">
@@ -908,7 +908,7 @@
     <div class="qq-card">
       <div class="qq-info">
         <!-- TODO: 把这里改成你的 QQ 群 -->
-        <div>官方 QQ 群：<strong id="qq-group">123456789</strong></div>
+        <div>官方 QQ 群：<strong id="qq-group">568707834</strong></div>
         <div style="margin-top:4px;">
           群内会第一时间发布维护公告、活动预告以及超级工程进度，
           也可以反馈 BUG、讨论设施设计方案。
@@ -921,64 +921,10 @@
       </div>
     </div>
   </section>
-
-  <!-- 图集 -->
-  <section id="gallery" class="section">
-    <div class="section-header">
-      <div>
-        <div class="section-title">服务器实机截图</div>
-        <div class="section-sub">以下图片均可替换为你自己的 QSERF 设施 / 香草纪元风景图</div>
-      </div>
-    </div>
-    <div class="gallery-grid">
-      <!-- TODO：把这三张图的 src 换成你的截图路径 -->
-      <article class="gallery-item">
-        <img class="gallery-img" src="images/gallery_qserf_control.jpg" alt="控制室与反应堆大厅" />
-        <div class="gallery-label">
-          <span>超级工程</span>
-          <span>控制室联锁与报警布置</span>
-        </div>
-      </article>
-      <article class="gallery-item">
-        <img class="gallery-img" src="images/gallery_reactor_hall.jpg" alt="反应堆大厅" />
-        <div class="gallery-label">
-          <span>超级工程</span>
-          <span>反应堆大厅与冷却系统</span>
-        </div>
-      </article>
-      <article class="gallery-item">
-        <img class="gallery-img" src="images/gallery_vanilla_town.jpg" alt="香草纪元小镇" />
-        <div class="gallery-label">
-          <span>香草纪元</span>
-          <span>玩家小镇与建筑群落</span>
-        </div>
-      </article>
-    </div>
-  </section>
-
-  <footer>
-    <div class="footer-inner">
-      <div>
-        © <span id="year"></span> MirageV Server · 非商业玩家自建服务器
-        <br />
-        本站与 Roblox、QSERF 原作者、Quantum Science 等官方实体无任何从属或合作关系。
-      </div>
-      <div class="footer-links">
-        <a href="#hero">返回顶部</a>
-        <a href="#join">加入社区</a>
-      </div>
-    </div>
-  </footer>
-</main>
-
 <div class="back-to-top" id="back-to-top">↑</div>
 <div class="toast" id="toast"></div>
 
 <script>
-  // ====== 配置区：把这里改成你的真实 IP / API 地址 ======
-  // 使用示例接口：https://api.mcsrvstat.us/3/{地址}
-  // 如果你自己有后端，可以把 api 字段改成你的后端地址即可（返回 JSON 含 players.online / players.max）。
-
   const SERVER_CONFIG = [
     {
       id: "super",
