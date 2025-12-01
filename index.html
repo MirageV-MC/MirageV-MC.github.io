@@ -760,8 +760,7 @@
         在方块世界建造量子设施
       </h1>
       <p class="hero-sub">
-        这里既有以量子研究设施为主题的<span style="color:var(--accent-strong);font-weight:600;">超级工程</span>，
-        也有纯净轻量的<span style="color:#a5b4fc;font-weight:600;">香草纪元</span>生存世界。
+        这里有以能源设施为主题的<span style="color:var(--accent-strong);font-weight:600;">超级工程</span>。
         服务器长期运营，稳定低延迟，等待下一位研究员/冒险者的到来。
       </p>
     </div>
@@ -803,79 +802,6 @@
     </div>
   </section>
 
-  <!-- 游戏模式 / 玩法 -->
-  <section id="modes" class="section">
-    <div class="section-header">
-      <div>
-        <div class="section-title">服务器玩法一览</div>
-        <div class="section-sub">你可以在科学设施与原版世界之间自由切换</div>
-      </div>
-    </div>
-    <div class="card-grid">
-      <!-- 超级工程：QSERF / MRC -->
-      <article class="card server-card" data-server-id="super">
-        <div class="card-tag-row">
-          <span class="card-tag">超级工程 · 科研设施主题</span>
-          <span>版本：1.20.x</span>
-        </div>
-        <h3 class="card-title">超级工程 · QSERF / MRC 复刻</h3>
-        <p class="card-desc">
-          以 Roblox 游戏 <strong>“QSERF（量子科学能源研究设施）”</strong> 为蓝本，
-          在 Minecraft 中重构一座复杂的能源研究中心。你可以参与反应堆大厅、控制室、冷却塔等
-          模块的建设与维护，体验设施报警、联锁、防护等完整流程。
-        </p>
-        <div class="card-meta">
-          <span class="badge-soft">反应堆 / 控制室 / 实验区</span>
-          <span class="badge-soft">高沉浸式报警与广播系统</span>
-          <span class="badge-soft">设施事件 &amp; 日常运维</span>
-        </div>
-        <div class="server-status-line">
-          <div class="server-status">
-            <span>当前在线：</span>
-            <strong id="super-online">-- / --</strong>
-          </div>
-          <div style="font-size:11px;color:var(--text-dim);" id="super-status-text">状态获取中...</div>
-        </div>
-        <div class="server-ip-line">
-          <!-- TODO: 修改 data-address 为超级工程服务器实际 IP -->
-          <span class="server-ip-text" id="super-ip">super.miragev.example.com:25565</span>
-          <button class="btn btn-outline" type="button" data-copy-target="#super-ip">复制 IP</button>
-        </div>
-      </article>
-
-      <!-- 香草纪元：原版生存 -->
-      <article class="card server-card" data-server-id="vanilla">
-        <div class="card-tag-row">
-          <span class="card-tag">香草纪元 · 纯净生存</span>
-          <span>版本：1.20.x</span>
-        </div>
-        <h3 class="card-title">香草纪元 · 纯净长期生存</h3>
-        <p class="card-desc">
-          贴近原版体验的长期档，禁用破坏平衡的作弊模组，保留适量便捷性，
-          适合安静盖房、刷怪、红石和与朋友一起慢慢游玩。世界长期不重置，
-          每一次建设都会真正留在时间轴上。
-        </p>
-        <div class="card-meta">
-          <span class="badge-soft">接近原版 · 轻度辅助</span>
-          <span class="badge-soft">长期不删档</span>
-          <span class="badge-soft">适合养老 / 红石 / 建筑</span>
-        </div>
-        <div class="server-status-line">
-          <div class="server-status">
-            <span>当前在线：</span>
-            <strong id="vanilla-online">-- / --</strong>
-          </div>
-          <div style="font-size:11px;color:var(--text-dim);" id="vanilla-status-text">状态获取中...</div>
-        </div>
-        <div class="server-ip-line">
-          <!-- TODO: 修改 data-address 为香草纪元服务器实际 IP -->
-          <span class="server-ip-text" id="vanilla-ip">vanilla.miragev.example.com:25565</span>
-          <button class="btn btn-outline" type="button" data-copy-target="#vanilla-ip">复制 IP</button>
-        </div>
-      </article>
-    </div>
-  </section>
-
   <!-- 在线情况总览 -->
   <section id="status" class="section">
     <div class="section-header">
@@ -897,7 +823,6 @@
     </div>
   </section>
 
-  <!-- 加入我们 -->
   <section id="join" class="section">
     <div class="section-header">
       <div>
@@ -907,7 +832,6 @@
     </div>
     <div class="qq-card">
       <div class="qq-info">
-        <!-- TODO: 把这里改成你的 QQ 群 -->
         <div>官方 QQ 群：<strong id="qq-group">568707834</strong></div>
         <div style="margin-top:4px;">
           群内会第一时间发布维护公告、活动预告以及超级工程进度，
