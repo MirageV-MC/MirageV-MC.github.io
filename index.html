@@ -4,1006 +4,225 @@
   <meta charset="UTF-8" />
   <title>MirageV Minecraft 服务器</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="MirageV Minecraft 服务器" />
+  
   <style>
     :root {
-      --bg: #050816;
-      --bg-soft: rgba(15, 23, 42, 0.88);
-      --accent: #38bdf8;
-      --accent-soft: rgba(56, 189, 248, 0.18);
-      --accent-strong: #22d3ee;
-      --text: #e5e7eb;
-      --text-dim: #9ca3af;
-      --danger: #f97373;
-      --success: #4ade80;
-      --border-soft: rgba(148, 163, 184, 0.25);
-      --radius-xl: 18px;
-      --shadow-soft: 0 24px 80px rgba(15, 23, 42, 0.95);
-      --blur: 18px;
-      --nav-h: 64px;
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
+      --bg: #ffffff;
+      --text: #222;
+      --text-light: #666;
+      --primary: #3b82f6;
+      --border: #e5e5e5;
+      --radius: 10px;
     }
 
     body {
-      min-height: 100vh;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      margin: 0;
+      padding: 0;
+      font-family: "Segoe UI", system-ui, sans-serif;
+      background: var(--bg);
       color: var(--text);
-      background:
-          radial-gradient(circle at top, rgba(56, 189, 248, 0.25), transparent 60%),
-          radial-gradient(circle at bottom, rgba(129, 140, 248, 0.2), transparent 65%),
-          linear-gradient(135deg, #020617, #020617 60%, #020617);
-      background-attachment: fixed;
-    }
-
-    .noise-overlay {
-      pointer-events: none;
-      position: fixed;
-      inset: 0;
-      opacity: 0.18;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='noStitch'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23n)' opacity='0.9'/%3E%3C/svg%3E");
-      mix-blend-mode: soft-light;
-      z-index: -1;
-    }
-
-    .container {
-      max-width: 1080px;
-      margin: 0 auto;
-      padding: 0 16px 80px;
     }
 
     header {
+      border-bottom: 1px solid var(--border);
+      background: #fff;
       position: sticky;
       top: 0;
-      z-index: 30;
-      backdrop-filter: blur(16px);
-      background: linear-gradient(to bottom, rgba(2, 6, 23, 0.95), rgba(2, 6, 23, 0.65));
-      border-bottom: 1px solid rgba(148, 163, 184, 0.25);
+      z-index: 10;
     }
 
     .nav {
-      height: var(--nav-h);
+      max-width: 960px;
+      margin: auto;
+      padding: 14px 20px;
       display: flex;
-      align-items: center;
       justify-content: space-between;
-      max-width: 1080px;
-      margin: 0 auto;
-      padding: 0 16px;
+      align-items: center;
     }
 
     .brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .brand-logo {
-      width: 32px;
-      height: 32px;
-      border-radius: 10px;
-      background: radial-gradient(circle at 30% 20%, #f97316, transparent 55%),
-                  radial-gradient(circle at 70% 80%, #22d3ee, transparent 55%),
-                  radial-gradient(circle at 80% 0, #4f46e5, transparent 60%);
-      box-shadow: 0 0 20px rgba(56, 189, 248, 0.6);
-    }
-
-    .brand-title {
       font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      font-size: 18px;
-    }
-
-    .brand-sub {
-      font-size: 11px;
-      color: var(--text-dim);
-      text-transform: uppercase;
-      letter-spacing: 0.2em;
+      font-size: 20px;
+      color: var(--primary);
     }
 
     nav ul {
       list-style: none;
       display: flex;
-      gap: 18px;
-      font-size: 13px;
+      gap: 16px;
+      margin: 0;
+      padding: 0;
     }
 
     nav a {
-      color: var(--text-dim);
       text-decoration: none;
-      position: relative;
-      padding-bottom: 3px;
-      transition: color 0.2s ease;
-    }
-
-    nav a::after {
-      content: "";
-      position: absolute;
-      left: 0;
-      bottom: 0;
-      width: 0;
-      height: 2px;
-      border-radius: 999px;
-      background: linear-gradient(90deg, var(--accent), var(--accent-strong));
-      transition: width 0.2s ease;
-    }
-
-    nav a:hover {
       color: var(--text);
-    }
-
-    nav a:hover::after {
-      width: 100%;
-    }
-
-    .hero {
-      display: grid;
-      grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
-      gap: 32px;
-      align-items: center;
-      padding-top: 40px;
-    }
-
-    @media (max-width: 800px) {
-      .hero {
-        grid-template-columns: minmax(0, 1fr);
-        padding-top: 32px;
-      }
-    }
-
-    .hero-text {
-      position: relative;
-      padding: 26px 26px 26px 0;
-    }
-
-    .hero-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 4px 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(56, 189, 248, 0.4);
-      background: linear-gradient(90deg, rgba(15, 23, 42, 0.94), rgba(15, 23, 42, 0.5));
-      box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.9);
-      font-size: 11px;
-      margin-bottom: 14px;
-    }
-
-    .hero-pill-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 999px;
-      background: var(--accent-soft);
-      box-shadow: 0 0 12px var(--accent-strong);
-      position: relative;
-      overflow: visible;
-    }
-
-    .hero-pill-dot::after {
-      content: "";
-      position: absolute;
-      inset: -4px;
-      border-radius: inherit;
-      border: 1px solid rgba(56, 189, 248, 0.3);
-    }
-
-    .hero-pill-label {
-      color: var(--accent);
-      font-weight: 600;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-    }
-
-    .hero-title {
-      font-size: clamp(32px, 4vw, 42px);
-      font-weight: 800;
-      line-height: 1.05;
-      margin-bottom: 14px;
-    }
-
-    .hero-title span {
-      background: radial-gradient(circle at 0 0, var(--accent), var(--accent-strong));
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    }
-
-    .hero-sub {
-      font-size: 14px;
-      color: var(--text-dim);
-      max-width: 480px;
-      line-height: 1.7;
-    }
-
-    .hero-kv {
-      position: relative;
-    }
-
-    .hero-card {
-      position: relative;
-      border-radius: 22px;
-      padding: 16px;
-      background: radial-gradient(circle at top left, rgba(56, 189, 248, 0.25), transparent),
-                  radial-gradient(circle at bottom right, rgba(129, 140, 248, 0.35), transparent),
-                  rgba(15, 23, 42, 0.94);
-      border: 1px solid rgba(148, 163, 184, 0.28);
-      box-shadow: var(--shadow-soft);
-      overflow: hidden;
-    }
-
-    .hero-card::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(circle at 0 0, rgba(56, 189, 248, 0.3), transparent 60%);
-      opacity: 0.8;
-      mix-blend-mode: soft-light;
-      pointer-events: none;
-    }
-
-    .hero-card-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 8px;
-    }
-
-    .hero-card-title {
-      font-size: 13px;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: var(--text-dim);
-    }
-
-    .hero-card-badge {
-      font-size: 11px;
-      padding: 3px 9px;
-      border-radius: 999px;
-      border: 1px solid rgba(34, 211, 238, 0.55);
-      background: rgba(15, 23, 42, 0.9);
-      box-shadow: 0 0 12px rgba(34, 211, 238, 0.5);
-    }
-
-    .hero-server-name {
-      font-size: 20px;
-      font-weight: 700;
-      margin-bottom: 8px;
-    }
-
-    .hero-server-desc {
-      font-size: 12px;
-      color: var(--text-dim);
-      margin-bottom: 12px;
-    }
-
-    .hero-status-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 12px;
-      margin-bottom: 12px;
-    }
-
-    .status-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 3px 10px;
-      border-radius: 999px;
-      background: rgba(15, 23, 42, 0.95);
-      border: 1px solid rgba(148, 163, 184, 0.5);
-    }
-
-    .status-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 999px;
-    }
-
-    .status-dot.online {
-      background: var(--success);
-      box-shadow: 0 0 12px rgba(74, 222, 128, 0.8);
-    }
-
-    .status-dot.offline {
-      background: var(--danger);
-      box-shadow: 0 0 10px rgba(248, 113, 113, 0.8);
-    }
-
-    .hero-ip-box {
-      font-family: ui-monospace, "SF Mono", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-      font-size: 12px;
-      padding: 7px 10px;
-      border-radius: 999px;
-      background: rgba(15, 23, 42, 0.95);
-      border: 1px solid rgba(148, 163, 184, 0.55);
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .hero-ip-box button {
-      all: unset;
-      cursor: pointer;
-      font-size: 11px;
-      color: var(--accent);
-      padding: 2px 7px;
-      border-radius: 999px;
-      background: rgba(15, 23, 42, 1);
-      border: 1px solid rgba(56, 189, 248, 0.4);
-    }
-
-    .hero-preview {
-      margin-top: 10px;
-      border-radius: 16px;
-      overflow: hidden;
-      border: 1px solid rgba(15, 23, 42, 0.9);
-      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.95);
-      background: #020617;
-      position: relative;
-    }
-
-    .hero-preview img {
-      display: block;
-      width: 100%;
-      height: 220px;
-      object-fit: cover;
-      object-position: center;
-      opacity: 0.95;
-    }
-
-    .hero-preview-label {
-      position: absolute;
-      left: 10px;
-      bottom: 10px;
-      padding: 4px 8px;
-      border-radius: 999px;
-      background: rgba(15, 23, 42, 0.88);
-      border: 1px solid rgba(148, 163, 184, 0.6);
-      font-size: 11px;
-      display: inline-flex;
-      gap: 6px;
-      align-items: center;
-    }
-
-    .section {
-      margin-top: 40px;
-    }
-
-    .section-header {
-      margin-bottom: 16px;
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      gap: 8px;
-    }
-
-    .section-title {
-      font-size: 18px;
-      font-weight: 700;
-    }
-
-    .section-sub {
-      font-size: 12px;
-      color: var(--text-dim);
-    }
-
-    .card-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 18px;
-    }
-
-    @media (max-width: 800px) {
-      .card-grid {
-        grid-template-columns: minmax(0, 1fr);
-      }
-    }
-
-    .card {
-      border-radius: var(--radius-xl);
-      padding: 16px 16px 14px;
-      background: radial-gradient(circle at top center, rgba(56, 189, 248, 0.18), transparent),
-                  rgba(15, 23, 42, 0.94);
-      border: 1px solid var(--border-soft);
-      box-shadow: 0 16px 40px rgba(15, 23, 42, 0.95);
-      position: relative;
-      overflow: hidden;
-      transform: translateY(4px);
-      opacity: 0;
-      transition: transform 0.4s ease, box-shadow 0.2s ease, border-color 0.2s ease, opacity 0.35s ease;
-    }
-
-    .card.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .card:hover {
-      transform: translateY(-4px);
-      border-color: rgba(56, 189, 248, 0.7);
-      box-shadow: 0 22px 55px rgba(15, 23, 42, 1);
-    }
-
-    .card-tag-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 11px;
-      margin-bottom: 8px;
-      color: var(--text-dim);
-    }
-
-    .card-tag {
-      padding: 3px 8px;
-      border-radius: 999px;
-      border: 1px solid rgba(148, 163, 184, 0.6);
-      background: rgba(15, 23, 42, 0.96);
-    }
-
-    .card-title {
-      font-size: 16px;
-      font-weight: 700;
-      margin-bottom: 6px;
-    }
-
-    .card-desc {
-      font-size: 13px;
-      color: var(--text-dim);
-      margin-bottom: 10px;
-      line-height: 1.7;
-    }
-
-    .card-meta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      font-size: 11px;
-      color: var(--text-dim);
-      margin-bottom: 10px;
-    }
-
-    .badge-soft {
-      padding: 3px 8px;
-      border-radius: 999px;
-      background: rgba(15, 23, 42, 0.94);
-      border: 1px solid rgba(148, 163, 184, 0.4);
-    }
-
-    .server-status-line {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 12px;
-      margin-top: 4px;
-    }
-
-    .server-status {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .server-status span {
-      color: var(--text-dim);
-    }
-
-    .server-status strong {
-      font-weight: 600;
-    }
-
-    .server-ip-line {
-      margin-top: 6px;
-      font-size: 12px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 8px;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-    }
-
-    .server-ip-text {
-      padding: 4px 8px;
-      border-radius: 999px;
-      background: rgba(15, 23, 42, 1);
-      border: 1px solid rgba(148, 163, 184, 0.6);
-      flex: 1;
-      text-overflow: ellipsis;
-      overflow: hidden;
-      white-space: nowrap;
-    }
-
-    .btn {
-      all: unset;
-      cursor: pointer;
-      border-radius: 999px;
-      padding: 5px 10px;
-      font-size: 11px;
-      border: 1px solid rgba(56, 189, 248, 0.6);
-      background: linear-gradient(135deg, rgba(56, 189, 248, 0.8), rgba(129, 140, 248, 0.8));
-      color: #0b1120;
-      font-weight: 600;
-      box-shadow: 0 0 16px rgba(56, 189, 248, 0.75);
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-    }
-
-    .btn-outline {
-      border: 1px solid rgba(148, 163, 184, 0.7);
-      background: rgba(15, 23, 42, 0.96);
-      color: var(--text);
-      box-shadow: none;
-    }
-
-    .btn:active {
-      transform: scale(0.97);
-    }
-
-    .qq-card {
-      margin-top: 26px;
-      border-radius: 18px;
-      padding: 14px 16px;
-      background: radial-gradient(circle at left, rgba(56, 189, 248, 0.22), transparent),
-                  rgba(15, 23, 42, 0.95);
-      border: 1px solid rgba(56, 189, 248, 0.5);
-      box-shadow: 0 18px 50px rgba(15, 23, 42, 0.9);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 16px;
-      flex-wrap: wrap;
-    }
-
-    .qq-info {
-      font-size: 13px;
-      color: var(--text-dim);
-    }
-
-    .qq-info strong {
-      color: var(--accent-strong);
       font-size: 15px;
     }
 
-    .gallery-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 14px;
+    nav a:hover {
+      color: var(--primary);
     }
 
-    @media (max-width: 960px) {
-      .gallery-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
+    .section {
+      max-width: 960px;
+      margin: 50px auto;
+      padding: 0 20px;
     }
 
-    @media (max-width: 640px) {
-      .gallery-grid {
-        grid-template-columns: minmax(0, 1fr);
-      }
+    .title {
+      font-size: 26px;
+      font-weight: 600;
+      margin-bottom: 10px;
     }
 
-    .gallery-item {
-      position: relative;
-      border-radius: 16px;
-      overflow: hidden;
-      border: 1px solid rgba(148, 163, 184, 0.6);
-      background: #020617;
-      box-shadow: 0 18px 45px rgba(15, 23, 42, 0.95);
-      cursor: pointer;
-      transform: translateY(4px);
-      opacity: 0;
-      transition: transform 0.4s ease, box-shadow 0.2s ease, opacity 0.35s ease;
+    .sub {
+      color: var(--text-light);
+      margin-bottom: 30px;
     }
 
-    .gallery-item.visible {
-      opacity: 1;
-      transform: translateY(0);
+    .card {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      background: #fff;
+      margin-bottom: 20px;
     }
 
-    .gallery-item:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 22px 60px rgba(15, 23, 42, 1);
-    }
-
-    .gallery-img {
-      display: block;
-      width: 100%;
-      height: 160px;
-      object-fit: cover;
-      object-position: center;
-      filter: saturate(1.1) contrast(1.05);
-    }
-
-    .gallery-label {
-      position: absolute;
-      left: 10px;
-      bottom: 8px;
-      padding: 4px 8px;
-      font-size: 11px;
-      border-radius: 999px;
-      background: rgba(15, 23, 42, 0.88);
-      border: 1px solid rgba(148, 163, 184, 0.7);
-      display: inline-flex;
-      gap: 6px;
+    .ip-box {
+      display: flex;
       align-items: center;
+      gap: 10px;
+      margin-top: 10px;
+      font-family: monospace;
+      font-size: 15px;
     }
 
-    .gallery-label span {
-      color: var(--text-dim);
+    button {
+      padding: 6px 12px;
+      border-radius: var(--radius);
+      border: 1px solid var(--primary);
+      background: var(--primary);
+      color: #fff;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #2563eb;
+    }
+
+    .btn-outline {
+      background: none;
+      color: var(--primary);
+      border: 1px solid var(--primary);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
     }
 
     footer {
-      margin-top: 40px;
-      padding: 18px 0 0;
-      font-size: 11px;
-      color: var(--text-dim);
-      border-top: 1px solid rgba(148, 163, 184, 0.28);
-    }
-
-    .footer-inner {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      gap: 10px;
-      align-items: baseline;
-    }
-
-    .footer-links {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .footer-links a {
-      color: var(--text-dim);
-      text-decoration: none;
-      border-bottom: 1px dotted rgba(148, 163, 184, 0.6);
-    }
-
-    .back-to-top {
-      position: fixed;
-      right: 24px;
-      bottom: 24px;
-      width: 34px;
-      height: 34px;
-      border-radius: 999px;
-      border: 1px solid rgba(148, 163, 184, 0.75);
-      background: radial-gradient(circle at top, rgba(56, 189, 248, 0.5), transparent),
-                  rgba(15, 23, 42, 0.96);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 18px;
-      color: var(--text);
-      cursor: pointer;
-      box-shadow: 0 18px 50px rgba(15, 23, 42, 1);
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.25s ease, transform 0.2s ease;
-      z-index: 40;
-    }
-
-    .back-to-top.visible {
-      opacity: 1;
-      pointer-events: auto;
-    }
-
-    .back-to-top:hover {
-      transform: translateY(-2px);
-    }
-
-    .toast {
-      position: fixed;
-      left: 50%;
-      bottom: 64px;
-      transform: translateX(-50%) translateY(16px);
-      padding: 6px 10px;
-      border-radius: 999px;
-      font-size: 11px;
-      background: rgba(15, 23, 42, 0.96);
-      border: 1px solid rgba(56, 189, 248, 0.65);
-      color: var(--text);
-      box-shadow: 0 16px 40px rgba(15, 23, 42, 0.95);
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.2s ease, transform 0.2s ease;
-      z-index: 50;
-    }
-
-    .toast.visible {
-      opacity: 1;
-      pointer-events: auto;
-      transform: translateX(-50%) translateY(0);
+      margin-top: 60px;
+      padding: 20px 0;
+      text-align: center;
+      border-top: 1px solid var(--border);
+      color: var(--text-light);
+      font-size: 14px;
     }
   </style>
 </head>
+
 <body>
-<div class="noise-overlay"></div>
 
 <header>
   <div class="nav">
-    <div class="brand">
-      <div class="brand-logo"></div>
-      <div>
-        <div class="brand-title">MirageV</div>
-        <div class="brand-sub">Minecraft Server</div>
-      </div>
-    </div>
+    <div class="brand">MirageV</div>
+    <nav>
+      <ul>
+        <li><a href="#hero">首页</a></li>
+        <li><a href="#status">在线</a></li>
+        <li><a href="#join">加入</a></li>
+      </ul>
+    </nav>
   </div>
 </header>
 
-<main class="container">
-  <!-- Hero -->
-  <section id="hero" class="hero">
-    <div class="hero-text">
-      <div class="hero-pill">
-        <div class="hero-pill-dot"></div>
-        <div class="hero-pill-label">MirageV 集群服务器</div>
-        <div style="color:var(--text-dim);">MC Java</div>
-      </div>
-      <h1 class="hero-title">
-        欢迎来到 <span>MirageV</span><br/>
-        在方块世界建造量子设施
-      </h1>
-      <p class="hero-sub">
-        这里有以能源设施为主题的<span style="color:var(--accent-strong);font-weight:600;">超级工程</span>。
-        服务器长期运营，稳定低延迟，等待下一位研究员/冒险者的到来。
-      </p>
+<section id="hero" class="section">
+  <div class="title">欢迎来到 MirageV Minecraft 服务器</div>
+  <div class="sub">这是一个以超级工程与量子设施为核心主题的长期服务器。</div>
+
+  <div class="card">
+    <div style="font-size:18px;font-weight:600;">服务器状态</div>
+    <div style="margin-top:10px;">
+      在线人数：<span id="online">--</span> / <span id="max">--</span>
     </div>
 
-    <div class="hero-kv">
-      <div class="hero-card">
-        <div class="hero-card-header">
-          <div class="hero-card-title">SERVER STATUS · LIVE</div>
-          <div class="hero-card-badge">全节点实时在线人数</div>
-        </div>
-        <div class="hero-server-name">MirageV 集群</div>
-        <div class="hero-server-desc">
-          下方在线人数会自动刷新，方便你在开黑前快速查看服务器活跃度。
-        </div>
-        <div class="hero-status-row">
-          <div class="status-pill" id="global-status-pill">
-            <div class="status-dot offline" id="global-status-dot"></div>
-            <span id="global-status-text">状态未知</span>
-          </div>
-          <div style="font-size:11px;color:var(--text-dim);">
-            全服在线：<span id="global-online">--</span> / <span id="global-max">--</span>
-          </div>
-        </div>
-        <div class="hero-ip-box">
-          <span>主入口 IP：</span>
-          <!-- TODO: 把这里改成你实际的主服 IP -->
-          <span id="main-ip-text">202.189.6.2:36176</span>
-          <button type="button" data-copy-target="#main-ip-text">复制</button>
-        </div>
-        <div class="hero-preview">
-          <!-- TODO: 把 src 换成你的一张横向服务器截图 -->
-          <img src="images/hero_qserf.jpg" alt="MirageV Super Engineering Preview" />
-          <div class="hero-preview-label">
-            <span style="font-size:10px;color:var(--text-dim);letter-spacing:0.16em;text-transform:uppercase;">Screenshot</span>
-            <span>QSERF / MRC 超级工程施工中</span>
-          </div>
-        </div>
-      </div>
+    <div class="ip-box">
+      IP：<span id="server-ip">202.189.6.2:36176</span>
+      <button class="btn-outline" onclick="copyIP()">复制</button>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- 在线情况总览 -->
-  <section id="status" class="section">
-    <div class="section-header">
-      <div>
-        <div class="section-title">在线情况总览</div>
-        <div class="section-sub">数据每隔一段时间自动更新，方便你选择合适的时间上线</div>
-      </div>
-      <button class="btn btn-outline" type="button" id="refresh-btn">手动刷新</button>
-    </div>
-    <div class="card" style="display:flex;flex-direction:column;gap:10px;">
-      <div style="font-size:13px;color:var(--text-dim);">
-        全服在线：<strong id="status-global-online">--</strong> / <strong id="status-global-max">--</strong>
-        <span style="margin-left:8px;font-size:11px;" id="status-global-label">等待首次刷新...</span>
-      </div>
-      <div style="font-size:12px;color:var(--text-dim);line-height:1.7;">
-        提示：若此处显示离线或人数为 <code>--</code>，可能是服务器暂未开放或状态查询接口被防火墙拦截。
-        如果你确定服务器在线，可以直接尝试使用上方 IP 进入游戏。
-      </div>
-    </div>
-  </section>
+<section id="status" class="section">
+  <div class="title">在线情况</div>
+  <div class="sub">实时刷新服务器在线人数</div>
 
-  <section id="join" class="section">
-    <div class="section-header">
-      <div>
-        <div class="section-title">加入 MirageV 社区</div>
-        <div class="section-sub">在正式进入服务器之前，你也可以先加入交流群交个朋友</div>
-      </div>
-    </div>
-    <div class="qq-card">
-      <div class="qq-info">
-        <div>官方 QQ 群：<strong id="qq-group">568707834</strong></div>
-        <div style="margin-top:4px;">
-          群内会第一时间发布维护公告、活动预告以及超级工程进度，
-          也可以反馈 BUG、讨论设施设计方案。
-        </div>
-      </div>
-    </div>
-  </section>
-<div class="back-to-top" id="back-to-top">↑</div>
-<div class="toast" id="toast"></div>
+  <button onclick="refreshStatus()">手动刷新</button>
+
+  <div class="card" id="status-box" style="margin-top:20px;">
+    正在获取数据……
+  </div>
+</section>
+
+<section id="join" class="section">
+  <div class="title">加入社区</div>
+  <div class="sub">欢迎加入官方 QQ 群与玩家交流。</div>
+
+  <div class="card">
+    QQ 群：<b>568707834</b>
+  </div>
+</section>
+
+<footer>
+  MirageV © <span id="year"></span>
+</footer>
 
 <script>
-  const SERVER_CONFIG = [
-    {
-      id: "super",
-      name: "超级工程",
-      address: "202.189.6.2:36176",
-      api: "https://api.mcsrvstat.us/3/202.189.6.2:36176"
-    }
-  ];
+  const api = "https://api.mcsrvstat.us/3/202.189.6.2:36176";
 
-  // ====== 工具函数 ======
-  const $ = (sel) => document.querySelector(sel);
-
-  function showToast(message) {
-    const toast = $("#toast");
-    if (!toast) return;
-    toast.textContent = message;
-    toast.classList.add("visible");
-    setTimeout(() => toast.classList.remove("visible"), 1800);
+  function copyIP() {
+    navigator.clipboard.writeText("202.189.6.2:36176");
+    alert("已复制服务器地址");
   }
 
-  async function copyFromTarget(selector) {
-    const el = $(selector);
-    if (!el) return;
-    const text = el.textContent.trim();
+  async function refreshStatus() {
+    const box = document.getElementById("status-box");
+    box.textContent = "正在读取…";
+
     try {
-      await navigator.clipboard.writeText(text);
-      showToast("已复制：" + text);
+      const res = await fetch(api);
+      const data = await res.json();
+
+      const online = data.players?.online ?? 0;
+      const max = data.players?.max ?? 0;
+
+      document.getElementById("online").textContent = online;
+      document.getElementById("max").textContent = max;
+
+      box.textContent = `当前在线：${online} / ${max}`;
     } catch (e) {
-      showToast("复制失败，请手动选择文本");
+      box.textContent = "无法获取状态（服务器可能关闭或被防火墙拦截）";
     }
   }
 
-  async function fetchServerStatus(config) {
-    try {
-      const resp = await fetch(config.api, { cache: "no-store" });
-      if (!resp.ok) throw new Error("HTTP " + resp.status);
-      const data = await resp.json();
+  refreshStatus();
+  setInterval(refreshStatus, 60000);
 
-      const online = data.players && typeof data.players.online === "number"
-        ? data.players.online
-        : 0;
-      const max = data.players && typeof data.players.max === "number"
-        ? data.players.max
-        : 0;
-      const onlineEl = $("#" + config.id + "-online");
-      const statusTextEl = $("#" + config.id + "-status-text");
-
-      if (onlineEl) onlineEl.textContent = `${online} / ${max || "--"}`;
-      if (statusTextEl) {
-        if (data.online) {
-          statusTextEl.textContent = "服务器在线";
-        } else {
-          statusTextEl.textContent = "服务器不在线或状态未知";
-        }
-      }
-
-      return { online: data.online ? online : 0, max: data.online ? max : 0 };
-    } catch (e) {
-      const onlineEl = $("#" + config.id + "-online");
-      const statusTextEl = $("#" + config.id + "-status-text");
-      if (onlineEl) onlineEl.textContent = "-- / --";
-      if (statusTextEl) statusTextEl.textContent = "状态查询失败";
-      return { online: 0, max: 0 };
-    }
-  }
-
-  async function refreshAllStatus() {
-    const globalDot = $("#global-status-dot");
-    const globalText = $("#global-status-text");
-    const globalOnlineEl = $("#global-online");
-    const globalMaxEl = $("#global-max");
-    const statusGlobalOnlineEl = $("#status-global-online");
-    const statusGlobalMaxEl = $("#status-global-max");
-    const statusLabelEl = $("#status-global-label");
-
-    if (statusLabelEl) statusLabelEl.textContent = "正在刷新...";
-
-    let sumOnline = 0;
-    let sumMax = 0;
-    let anyOnline = false;
-
-    for (const cfg of SERVER_CONFIG) {
-      const result = await fetchServerStatus(cfg);
-      sumOnline += result.online;
-      sumMax += result.max;
-      if (result.online > 0) anyOnline = true;
-    }
-
-    globalOnlineEl.textContent = sumOnline;
-    globalMaxEl.textContent = sumMax || "--";
-    statusGlobalOnlineEl.textContent = sumOnline;
-    statusGlobalMaxEl.textContent = sumMax || "--";
-
-    if (statusLabelEl) {
-      statusLabelEl.textContent = "最后刷新于 " + new Date().toLocaleTimeString();
-    }
-
-    if (anyOnline) {
-      globalDot.classList.remove("offline");
-      globalDot.classList.add("online");
-      globalText.textContent = "部分服务器在线";
-    } else {
-      globalDot.classList.remove("online");
-      globalDot.classList.add("offline");
-      globalText.textContent = "暂未检测到在线服务器";
-    }
-  }
-
-  function setupScrollAnimations() {
-    const cards = document.querySelectorAll(".card");
-    const galleryItems = document.querySelectorAll(".gallery-item");
-    const backToTop = $("#back-to-top");
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("visible");
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.2 }
-    );
-
-    cards.forEach((card) => observer.observe(card));
-    galleryItems.forEach((item) => observer.observe(item));
-
-    window.addEventListener("scroll", () => {
-      if (!backToTop) return;
-      if (window.scrollY > 260) backToTop.classList.add("visible");
-      else backToTop.classList.remove("visible");
-    });
-
-    if (backToTop) {
-      backToTop.addEventListener("click", () => {
-        window.scrollTo({ top: 0, behavior: "smooth" });
-      });
-    }
-  }
-
-  document.addEventListener("DOMContentLoaded", () => {
-    const yearEl = $("#year");
-    if (yearEl) yearEl.textContent = new Date().getFullYear();
-
-    const superIpEl = $("#super-ip");
-    const vanillaIpEl = $("#vanilla-ip");
-    if (superIpEl) superIpEl.textContent = SERVER_CONFIG.find((s) => s.id === "super").address;
-    if (vanillaIpEl) vanillaIpEl.textContent = SERVER_CONFIG.find((s) => s.id === "vanilla").address;
-
-    document.querySelectorAll("[data-copy-target]").forEach((btn) => {
-      btn.addEventListener("click", () => {
-        const target = btn.getAttribute("data-copy-target");
-        if (target) copyFromTarget(target);
-      });
-    });
-
-    const refreshBtn = $("#refresh-btn");
-    if (refreshBtn) {
-      refreshBtn.addEventListener("click", () => {
-        refreshAllStatus().then(() => showToast("已刷新服务器状态"));
-      });
-    }
-
-    refreshAllStatus();
-    setInterval(refreshAllStatus, 60 * 1000);
-
-    setupScrollAnimations();
-  });
+  document.getElementById("year").textContent = new Date().getFullYear();
 </script>
+
 </body>
 </html>
