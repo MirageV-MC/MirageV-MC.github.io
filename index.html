@@ -131,6 +131,30 @@
       color: var(--text-light);
       font-size: 14px;
     }
+
+    .player-list {
+      margin-top: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .player-chip {
+      padding: 4px 10px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: #f9fafb;
+      font-family: monospace;
+      font-size: 13px;
+      color: var(--text);
+    }
+
+    .player-empty {
+      margin-top: 10px;
+      color: var(--text-light);
+      font-size: 14px;
+    }
+
   </style>
 </head>
 
@@ -173,7 +197,11 @@
   <button onclick="refreshStatus()">手动刷新</button>
 
   <div class="card" id="status-box" style="margin-top:20px;">
-    正在获取数据……
+    <div id="status-text">正在获取数据……</div>
+
+    <div style="margin-top:14px;font-weight:600;">玩家列表</div>
+    <div id="player-list" class="player-list"></div>
+    <div id="player-empty" class="player-empty" style="display:none;">（服务器未公开玩家列表或当前无人在线）</div>
   </div>
 </section>
 
@@ -198,12 +226,29 @@
     alert("已复制服务器地址");
   }
 
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, (c) => ({
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#39;"
+    }[c]));
+  }
+
+
   async function refreshStatus() {
     const box = document.getElementById("status-box");
-    box.textContent = "正在读取…";
+    const statusText = document.getElementById("status-text");
+    const list = document.getElementById("player-list");
+    const empty = document.getElementById("player-empty");
+
+    statusText.textContent = "正在读取…";
+    list.innerHTML = "";
+    empty.style.display = "none";
 
     try {
-      const res = await fetch(api);
+      const res = await fetch(api, { cache: "no-store" });
       const data = await res.json();
 
       const online = data.players?.online ?? 0;
@@ -212,9 +257,28 @@
       document.getElementById("online").textContent = online;
       document.getElementById("max").textContent = max;
 
-      box.textContent = `当前在线：${online} / ${max}`;
+      statusText.textContent = `当前在线：${online} / ${max}`;
+
+      const players =
+      (Array.isArray(data.players?.list)
+        ? data.players.list.map(p => (typeof p === "string" ? p : p?.name)).filter(Boolean)
+        : null) ||
+      (Array.isArray(data.players?.sample)
+        ? data.players.sample.map(p => (typeof p === "string" ? p : p?.name)).filter(Boolean)
+        : []) ||
+      [];
+
+      if (!players.length) {
+        empty.style.display = "block";
+        return;
+      }
+
+      const chips = players.map(name => `<span class="player-chip">${escapeHtml(name)}</span>`).join("");
+      list.innerHTML = chips;
+
     } catch (e) {
-      box.textContent = "无法获取状态（服务器可能关闭或被防火墙拦截）";
+      statusText.textContent = "无法获取状态（服务器可能关闭或被防火墙拦截）";
+      empty.style.display = "block";
     }
   }
 
