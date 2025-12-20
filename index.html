@@ -182,11 +182,6 @@
     <div style="margin-top:10px;">
       在线人数：<span id="online">--</span> / <span id="max">--</span>
     </div>
-
-    <div class="ip-box">
-      IP：<span id="server-ip">202.189.6.2:36176</span>
-      <button class="btn-outline" onclick="copyIP()">复制</button>
-    </div>
   </div>
 </section>
 
@@ -219,12 +214,7 @@
 </footer>
 
 <script>
-  const api = "https://api.mcsrvstat.us/3/202.189.6.2:36176";
-
-  function copyIP() {
-    navigator.clipboard.writeText("202.189.6.2:36176");
-    alert("已复制服务器地址");
-  }
+  const api = "https://api.mcsrvstat.us/3/202.189.6.37:25565";
 
   function escapeHtml(s) {
     return String(s).replace(/[&<>"']/g, (c) => ({
