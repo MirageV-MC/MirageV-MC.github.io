@@ -4,16 +4,43 @@
   <meta charset="UTF-8" />
   <title>MirageV Minecraft 服务器</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
+
   <style>
+
     :root {
+      /* 默认：暗黑模式 */
+      --bg: #0b0f14;
+      --text: #e8eef6;
+      --text-light: #a8b3c2;
+      --primary: #3b82f6;
+      --border: rgba(255,255,255,.12);
+      --radius: 10px;
+
+      --card: rgba(255,255,255,.06);
+      --card-strong: rgba(255,255,255,.08);
+      --chip: rgba(255,255,255,.06);
+      --code: rgba(255,255,255,.06);
+      --quote: rgba(255,255,255,.05);
+      --header: rgba(11,15,20,.72);
+      --shadow: 0 10px 30px rgba(0,0,0,.28);
+    }
+
+    html[data-theme="light"] {
       --bg: #ffffff;
       --text: #222;
       --text-light: #666;
       --primary: #3b82f6;
       --border: #e5e5e5;
-      --radius: 10px;
+
+      --card: #ffffff;
+      --card-strong: #ffffff;
+      --chip: #f9fafb;
+      --code: #f9fafb;
+      --quote: #fafafa;
+      --header: rgba(255,255,255,.82);
+      --shadow: 0 10px 28px rgba(0,0,0,.08);
     }
+
 
     body {
       margin: 0;
@@ -25,7 +52,9 @@
 
     header {
       border-bottom: 1px solid var(--border);
-      background: #fff;
+      background: var(--header);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
       position: sticky;
       top: 0;
       z-index: 10;
@@ -85,7 +114,8 @@
       border: 1px solid var(--border);
       border-radius: var(--radius);
       padding: 20px;
-      background: #fff;
+      background: var(--card-strong);
+      box-shadow: var(--shadow);
       margin-bottom: 20px;
     }
 
@@ -143,7 +173,7 @@
       padding: 4px 10px;
       border: 1px solid var(--border);
       border-radius: 999px;
-      background: #f9fafb;
+      background: var(--chip);
       font-family: monospace;
       font-size: 13px;
       color: var(--text);
@@ -154,6 +184,139 @@
       color: var(--text-light);
       font-size: 14px;
     }
+
+    /* Docs */
+    .doc-list {
+      margin-top: 14px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 12px;
+    }
+    .doc-item {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--card-strong);
+      box-shadow: var(--shadow);
+      padding: 14px;
+      cursor: pointer;
+      transition: transform .06s ease;
+      user-select: none;
+    }
+    .doc-item:hover { transform: translateY(-1px); }
+    .doc-name { font-weight: 600; font-size: 15px; }
+    .doc-meta { margin-top: 6px; color: var(--text-light); font-size: 13px; font-family: monospace; }
+    .doc-toolbar { display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-top: 10px; }
+    .doc-view {
+      margin-top: 16px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--card-strong);
+      box-shadow: var(--shadow);
+      padding: 16px;
+      display:none;
+    }
+    .doc-view .doc-title { font-size: 18px; font-weight: 600; }
+    .md {
+      margin-top: 12px;
+      line-height: 1.7;
+      overflow-wrap: anywhere;
+    }
+    .md h1, .md h2, .md h3 { margin: 16px 0 10px; }
+    .md h1 { font-size: 22px; }
+    .md h2 { font-size: 18px; }
+    .md h3 { font-size: 16px; }
+    .md pre {
+      padding: 12px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      overflow: auto;
+      background: var(--code);
+    }
+    .md code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+    .md blockquote {
+      margin: 10px 0;
+      padding: 8px 12px;
+      border-left: 4px solid var(--border);
+      color: var(--text-light);
+      background: var(--quote);
+      border-radius: 8px;
+    }
+    .md a { color: var(--primary); text-decoration: none; }
+    .md a:hover { text-decoration: underline; }
+    .hint {
+      color: var(--text-light);
+      font-size: 14px;
+    }
+
+
+    /* Theme transitions */
+    html, body, header, .card, .doc-item, .doc-view, .player-chip, .md pre, .md blockquote, button, nav a {
+      transition: background-color .28s ease, color .28s ease, border-color .28s ease, box-shadow .28s ease, transform .28s ease;
+    }
+
+    /* Theme toggle (dark/light) */
+    .theme-toggle {
+      position: relative;
+      width: 56px;
+      height: 32px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.06);
+      padding: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      user-select: none;
+      outline: none;
+    }
+    html[data-theme="light"] .theme-toggle {
+      background: rgba(0,0,0,.04);
+    }
+    .theme-toggle:active { transform: scale(.98); }
+
+    .theme-toggle .track {
+      position: absolute;
+      inset: 0;
+      border-radius: 999px;
+    }
+
+    .theme-toggle .knob {
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      width: 26px;
+      height: 26px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.86);
+      box-shadow: 0 8px 18px rgba(0,0,0,.25);
+      transform: translateX(0);
+      transition: transform .28s cubic-bezier(.2,.9,.2,1), background-color .28s ease;
+    }
+    html[data-theme="light"] .theme-toggle .knob {
+      background: rgba(0,0,0,.12);
+      box-shadow: 0 8px 18px rgba(0,0,0,.12);
+    }
+    html[data-theme="light"] .theme-toggle[data-state="light"] .knob { transform: translateX(24px); }
+
+    .theme-toggle .icon {
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      opacity: .9;
+      transition: opacity .28s ease, transform .28s ease;
+    }
+    .theme-toggle .icon.sun { left: 10px; }
+    .theme-toggle .icon.moon { right: 10px; }
+
+    html[data-theme="dark"] .theme-toggle .icon.sun { opacity: .35; transform: scale(.92); }
+    html[data-theme="dark"] .theme-toggle .icon.moon { opacity: .95; transform: scale(1); }
+    html[data-theme="light"] .theme-toggle .icon.sun { opacity: .95; transform: scale(1); }
+    html[data-theme="light"] .theme-toggle .icon.moon { opacity: .35; transform: scale(.92); }
+
+    /* Header spacing for the new button */
+    .nav { gap: 14px; }
+    nav { display:flex; align-items:center; }
 
   </style>
 </head>
@@ -168,8 +331,23 @@
         <li><a href="#hero">首页</a></li>
         <li><a href="#status">在线</a></li>
         <li><a href="#join">加入</a></li>
+        <li><a href="#docs">文档</a></li>
       </ul>
+
     </nav>
+
+    <button id="theme-toggle" class="theme-toggle" type="button" aria-label="切换暗黑/亮白">
+      <span class="track"></span>
+      <svg class="icon sun" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M12 18a6 6 0 1 0 0-12 6 6 0 0 0 0 12Z" stroke="currentColor" stroke-width="2"/>
+        <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      <svg class="icon moon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M21 14.5A7.5 7.5 0 0 1 9.5 3 9 9 0 1 0 21 14.5Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+      </svg>
+      <span class="knob"></span>
+    </button>
+
   </div>
 </header>
 
@@ -209,11 +387,57 @@
   </div>
 </section>
 
+<section id="docs" class="section">
+  <div class="title">文档</div>
+
+  <div class="card">
+    <div class="doc-toolbar">
+      <button class="btn-outline" onclick="loadDocsList(true)">重新扫描</button>
+      <span id="docs-hint" class="hint">正在扫描…</span>
+    </div>
+
+    <div id="doc-list" class="doc-list"></div>
+
+    <div id="doc-view" class="doc-view">
+      <div class="doc-toolbar" style="margin-top:0;">
+        <button class="btn-outline" onclick="backToDocList()">返回</button>
+      </div>
+
+      <div class="doc-title" id="doc-title"></div>
+      <div class="doc-meta" id="doc-path"></div>
+      <div class="md" id="doc-body"></div>
+    </div>
+  </div>
+</section>
+
 <footer>
   MirageV © <span id="year"></span>
 </footer>
 
+<script src="mdToHtml.js"></script>
 <script>
+  const THEME_KEY = "miragev_theme";
+  function setTheme(theme) {
+    const t = (theme === "light") ? "light" : "dark";
+    document.documentElement.setAttribute("data-theme", t);
+    localStorage.setItem(THEME_KEY, t);
+
+    const btn = document.getElementById("theme-toggle");
+    if (btn) btn.setAttribute("data-state", t);
+  }
+
+  function initTheme() {
+    const saved = localStorage.getItem(THEME_KEY);
+    setTheme(saved || "dark");
+    const btn = document.getElementById("theme-toggle");
+    if (btn) {
+      btn.addEventListener("click", () => {
+        const cur = document.documentElement.getAttribute("data-theme") || "dark";
+        setTheme(cur === "dark" ? "light" : "dark");
+      });
+    }
+  }
+
   const api = "https://api.mcsrvstat.us/3/202.189.6.37:25565";
 
   function escapeHtml(s) {
@@ -226,6 +450,116 @@
     }[c]));
   }
 
+  const DOCS_MANIFEST = "docx/index.json";
+  const DOCS_FALLBACK = ["README.md"];
+
+  let currentDocPath = null;
+
+  function normalizeDocName(path) {
+    const base = String(path).split("/").pop() || String(path);
+    return base.replace(/\.md$/i, "");
+  }
+
+  function setDocsHint(msg) {
+    document.getElementById("docs-hint").textContent = msg;
+  }
+
+  function renderDocList(paths) {
+    const list = document.getElementById("doc-list");
+    const view = document.getElementById("doc-view");
+
+    list.innerHTML = "";
+
+    view.style.display = "none";
+    list.style.display = "grid";
+
+    if (!paths || !paths.length) {
+      list.innerHTML = `<div class="hint">（未找到任何文档）</div>`;
+      return;
+    }
+
+    const items = paths.map(p => {
+      const name = normalizeDocName(p);
+      return `
+      <div class="doc-item" onclick="openDoc('${escapeHtml(p)}')">
+        <div class="doc-name">${escapeHtml(name)}</div>
+        <div class="doc-meta">${escapeHtml(p)}</div>
+      </div>
+    `;
+    }).join("");
+
+    list.innerHTML = items;
+  }
+
+  async function loadDocsList(force = false) {
+    const cacheMode = force ? "no-store" : "default";
+    setDocsHint("正在扫描…");
+
+    try {
+      const res = await fetch(DOCS_MANIFEST, { cache: cacheMode });
+      if (!res.ok) throw new Error("manifest not found");
+      const data = await res.json();
+      const paths = (Array.isArray(data) ? data : [])
+              .filter(x => typeof x === "string" && x.toLowerCase().endsWith(".md"))
+              .map(x => x.startsWith("docx/") ? x : ("docx/" + x));
+      renderDocList(paths);
+      setDocsHint(`已加载 ${paths.length} 个文档`);
+      return;
+    } catch (e) {
+      // fallback
+      const paths = DOCS_FALLBACK.map(x => x.startsWith("docx/") ? x : ("docx/" + x));
+      renderDocList(paths);
+      setDocsHint("未找到 docx/index.json，已使用回退列表（请按页面说明补上清单文件）");
+    }
+  }
+
+  async function openDoc(path) {
+    const list = document.getElementById("doc-list");
+    const view = document.getElementById("doc-view");
+    const title = document.getElementById("doc-title");
+    const meta = document.getElementById("doc-path");
+    const body = document.getElementById("doc-body");
+
+    currentDocPath = path;
+
+    title.textContent = normalizeDocName(path);
+    meta.textContent = path;
+    body.innerHTML = "<div class='hint'>正在读取…</div>";
+
+    view.style.display = "block";
+    list.style.display = "none";
+
+    try {
+      const res = await fetch(path, { cache: "no-store" });
+      if (!res.ok) throw new Error("doc fetch failed");
+      const md = await res.text();
+      body.innerHTML = mdToHtml(md);
+    } catch (e) {
+      body.innerHTML = "<div class='hint'>无法读取文档（路径不存在、CORS、或站点未部署该文件）。</div>";
+    }
+  }
+
+  function backToDocList() {
+    const list = document.getElementById("doc-list");
+    const view = document.getElementById("doc-view");
+    view.style.display = "none";
+    list.style.display = "grid";
+    currentDocPath = null;
+  }
+
+  function openDocInNewTab() {
+    if (!currentDocPath) return;
+
+    const title = document.getElementById("doc-title").textContent || "Document";
+    const bodyHtml = document.getElementById("doc-body").innerHTML || "";
+
+    const w = window.open("", "_blank", "noopener,noreferrer");
+    if (!w) return;
+
+    w.document.write(mdToHtml(currentDocPath))
+    w.document.open();
+    w.document.close();
+  }
 
   async function refreshStatus() {
     const box = document.getElementById("status-box");
@@ -250,13 +584,13 @@
       statusText.textContent = `当前在线：${online} / ${max}`;
 
       const players =
-      (Array.isArray(data.players?.list)
-        ? data.players.list.map(p => (typeof p === "string" ? p : p?.name)).filter(Boolean)
-        : null) ||
-      (Array.isArray(data.players?.sample)
-        ? data.players.sample.map(p => (typeof p === "string" ? p : p?.name)).filter(Boolean)
-        : []) ||
-      [];
+              (Array.isArray(data.players?.list)
+                      ? data.players.list.map(p => (typeof p === "string" ? p : p?.name)).filter(Boolean)
+                      : null) ||
+              (Array.isArray(data.players?.sample)
+                      ? data.players.sample.map(p => (typeof p === "string" ? p : p?.name)).filter(Boolean)
+                      : []) ||
+              [];
 
       if (!players.length) {
         empty.style.display = "block";
@@ -272,6 +606,9 @@
     }
   }
 
+  initTheme();
+
+  loadDocsList();
   refreshStatus();
   setInterval(refreshStatus, 60000);
 
