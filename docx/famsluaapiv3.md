@@ -10,7 +10,7 @@
 
 ## 系统概述
 
-FAMS（Flexible Autonomous Management System）是一个灵活的自主管理系统，专为 Minecraft CC:Tweaked 环境设计。它采用中央-节点架构，支持多节点协同工作，具备智能决策、安全控制和记忆系统等功能。
+FAMS（Facility Automatic Management System）设施全自动管理系统，专为 Minecraft CC:Tweaked 环境设计。它采用中央-节点架构，支持多节点协同工作，具备智能决策、安全控制和记忆系统等功能。
 
 ### 核心概念
 
@@ -445,108 +445,6 @@ local result = ccio.invokeApi("fams.load")
 
 ## 完整示例
 
-### 智能农场管理系统
-
-#### 中央计算机配置
-
-```lua
--- 中央计算机 - 农场管理大脑
-local ccio = peripheral.find("gfbs")
-
--- 初始化系统
-ccio.invokeApi("fams.setCentral", {
-    stateDim = 8,
-    actionDim = 6,
-    maxNodes = 10,
-    tickIntervalMs = 200
-})
-
--- 设置农场目标（温度、湿度、光照等）
-ccio.invokeApi("fams.setGoal", {
-    target = {25, 60, 500, 7.0, 80, 0.3, 0.1, 0.05},
-    weights = {1.0, 0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3}
-})
-
--- 配置安全参数
-ccio.invokeApi("fams.setSafetyLimits", {
-    riskHardLimit = 0.8,
-    emergencyTriggerRisk = 0.9,
-    uMin = 0,
-    uMax = 1
-})
-
--- 设置为正式模式
-ccio.invokeApi("fams.setMode", "FORMAL")
-
-print("农场管理系统已启动")
-```
-
-#### 传感器节点
-
-```lua
--- 传感器节点 - 环境监测
-local ccio = peripheral.find("gfbs")
-
--- 连接和注册
-ccio.invokeApi("fams.connectCentral")
-local nodeInfo = ccio.invokeApi("fams.registerNode", {
-    id = "FARM_SENSOR",
-    inDim = 5,
-    outDim = 3
-})
-
--- 传感器读取函数
-function readSensors()
-    return {
-        peripheral.call("thermometer_0", "getTemperature") or 20,
-        peripheral.call("hygrometer_0", "getHumidity") or 50,
-        peripheral.call("lightSensor_0", "getLightLevel") or 300,
-        peripheral.call("phSensor_0", "getPH") or 7.0,
-        peripheral.call("moistureSensor_0", "getMoisture") or 60
-    }
-end
-
--- 主循环
-while true do
-    local sensorData = readSensors()
-    ccio.invokeApi("fams.pushIn", sensorData)
-    sleep(1)  -- 1秒间隔
-end
-```
-
-#### 执行器节点
-
-```lua
--- 执行器节点 - 设备控制
-local ccio = peripheral.find("gfbs")
-
--- 连接和注册
-ccio.invokeApi("fams.connectCentral")
-local nodeInfo = ccio.invokeApi("fams.registerNode", {
-    id = "FARM_ACTUATOR",
-    inDim = 3,
-    outDim = 4
-})
-
--- 设备控制函数
-function controlDevices(signals)
-    -- signals[1]: 加热器功率 (0-1)
-    -- signals[2]: 灌溉阀门开度 (0-1)
-    -- signals[3]: 补光灯强度 (0-1)
-    
-    peripheral.call("heater_0", "setPower", signals[1])
-    peripheral.call("irrigation_0", "setValve", signals[2])
-    peripheral.call("growLight_0", "setIntensity", signals[3])
-end
-
--- 主循环
-while true do
-    local controlSignals = ccio.invokeApi("fams.pullOut")
-    controlDevices(controlSignals)
-    sleep(0.5)  -- 0.5秒间隔
-end
-```
-
 ### 工业自动化系统
 
 #### 中央监控系统
@@ -910,7 +808,7 @@ end
 
 ## 总结
 
-FAMS API 提供了一个强大而灵活的自主管理系统框架，适用于各种复杂的自动化场景。通过本教程，您可以：
+FAMS API 提供了一个强大而灵活的设施全自动管理系统框架，适用于各种复杂的自动化场景。通过本教程，您可以：
 
 1. **快速上手**：掌握基本的中央-节点架构配置
 2. **深入使用**：了解所有API的详细功能和参数
@@ -918,7 +816,6 @@ FAMS API 提供了一个强大而灵活的自主管理系统框架，适用于�
 4. **优化维护**：遵循最佳实践确保系统稳定运行
 5. **故障排除**：快速解决常见问题
 
-希望本教程能帮助您在 CC:Tweaked 环境中成功构建智能自主管理系统！如有更多问题，请参考官方文档或社区讨论。
+希望本教程能帮助您在 CC:Tweaked 环境中成功构建智能设施管理系统！如有更多问题，请参考官方文档或社区讨论。
 
 - 本文档由AI编写，仅供参考，不保证准确性
-
